@@ -3,11 +3,11 @@ import { Text, View, FlatList, TouchableOpacity } from "react-native"
 import { useFonts } from "expo-font"
 import { useState } from "react"
 
-import data from "../database/itemList.json"
+import itemList from "../database/itemList.json"
 
 import styles from "./styles"
 
-const items = data.itemList
+const items = itemList.itemList
 
 function ItemList({
   selectedItems,

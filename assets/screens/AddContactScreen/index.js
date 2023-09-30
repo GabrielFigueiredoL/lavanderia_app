@@ -1,13 +1,17 @@
 import { Text, View, ScrollView } from "react-native"
 import { useFonts } from "expo-font"
 import { TextInput, Button } from "react-native-paper"
-import { useState, useEffect } from "react"
+import { useState, useCallback } from "react"
+import { useFocusEffect } from "@react-navigation/native"
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage"
+import uuid from "react-native-uuid"
+import Toast from "react-native-toast-message"
 
 import styles from "./styles"
 import DatePicker from "../../components/DatePicker"
 import ItemList from "../../components/ItemList"
-
-import itemList from "../../components/database/itemList.json"
 
 function AddContact({ navigation }) {
   const [selectedDate, setSelectedDate] = useState()
@@ -16,26 +20,18 @@ function AddContact({ navigation }) {
   const [localName, setLocalName] = useState()
   const [discount, setDiscount] = useState()
   const [totalValue, setTotalValue] = useState(0)
-  const [newService, setNewService] = useState({
-    name: "",
-    local: "",
-    items: "",
-    date: "",
-    value: 0,
-  })
+  const { getItem, setItem } = useAsyncStorage("@lavanderia_app:clientes")
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+  useFocusEffect(
+    useCallback(() => {
       setSelectedDate("")
       setSelectedItems([])
       setContactName("")
       setLocalName("")
       setDiscount("")
       setTotalValue(0)
-    })
-
-    return unsubscribe
-  }, [navigation])
+    }, [])
+  )
 
   const [loaded] = useFonts({
     RalewayBold: require("../../fonts/Raleway-Bold.ttf"),
@@ -47,16 +43,35 @@ function AddContact({ navigation }) {
 
   let finalValue = totalValue - discount
 
-  const handleOnClick = () => {
-    const tempNewService = {
-      name: contactName,
-      local: localName,
-      items: selectedItems,
-      date: selectedDate,
-      value: finalValue,
+  async function handleNew() {
+    try {
+      const id = uuid.v4()
+      const newData = {
+        id,
+        contactName,
+        localName,
+        selectedDate,
+        selectedItems,
+        finalValue,
+      }
+
+      const response = await getItem()
+      const previousData = response ? JSON.parse(response) : []
+
+      const data = [...previousData, newData]
+
+      await setItem(JSON.stringify(data))
+      Toast.show({
+        type: "success",
+        text1: "Cliente adicionado com sucesso",
+      })
+    } catch (error) {
+      console.log(error)
+      Toast.show({
+        type: "error",
+        text1: "Não foi possivel adicionar o cliente!",
+      })
     }
-    setNewService(tempNewService)
-    console.log(newService)
   }
 
   const renderButton = () => {
@@ -146,7 +161,7 @@ function AddContact({ navigation }) {
             mode="contained"
             buttonColor="#89CCC5"
             textColor="#272727"
-            onPress={handleOnClick}
+            onPress={handleNew}
           >
             Adicionar Serviço
           </Button>

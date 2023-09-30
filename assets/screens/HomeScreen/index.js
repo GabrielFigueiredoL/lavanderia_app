@@ -1,26 +1,30 @@
-import { Text, View, ScrollView, FlatList } from "react-native"
-import React from "react"
+import { Text, View, ScrollView } from "react-native"
+import { useState, useCallback } from "react"
+import { useFocusEffect } from "@react-navigation/native"
 import { useFonts } from "expo-font"
+import { useAsyncStorage } from "@react-native-async-storage/async-storage"
 
 import MainCard from "../../components/MainCard"
 import ContactList from "../../components/ContactList"
 
 import styles from "./styles"
 
-const data = [
-  { id: 1, name: "André", itens: "4 itens", value: 70.5 },
-  { id: 2, name: "Samira", itens: "2 itens", value: 90.0 },
-  { id: 3, name: "Carlos", itens: "5 itens", value: 150.0 },
-  { id: 4, name: "Alan", itens: "1 itens", value: 50.0 },
-  { id: 5, name: "Laura", itens: "3 itens", value: 140.0 },
-  { id: 6, name: "Laura", itens: "3 itens", value: 140.0 },
-  { id: 7, name: "Laura", itens: "3 itens", value: 140.0 },
-  { id: 8, name: "Laura", itens: "3 itens", value: 140.0 },
-  { id: 9, name: "Laura", itens: "3 itens", value: 140.0 },
-  { id: 10, name: "Laura", itens: "3 itens", value: 140.0 },
-]
-
 function Home({ navigation }) {
+  const [data, setData] = useState([])
+  const { getItem, setItem } = useAsyncStorage("@lavanderia_app:clientes")
+
+  useFocusEffect(
+    useCallback(() => {
+      handleFetchData()
+    }, [])
+  )
+
+  async function handleFetchData() {
+    const response = await getItem()
+    const data = response ? JSON.parse(response) : []
+    setData(data)
+  }
+
   const [loaded] = useFonts({
     RalewayBold: require("../../fonts/Raleway-Bold.ttf"),
     Montserrat: require("../../fonts/Montserrat-Regular.ttf"),
@@ -29,6 +33,20 @@ function Home({ navigation }) {
   if (!loaded) {
     return null
   }
+
+  /*
+  excluir registro
+  
+  async function handleRemove(id) {
+    const response = await getItem()
+    const previousData = response ? JSON.parse(response) : []
+
+    const data = previousData.filter((item) => item.id !== id)
+    setItem(JSON.stringify(data))
+    setData(data)
+  }
+  */
+
   return (
     <View style={styles.homescreen}>
       <MainCard />

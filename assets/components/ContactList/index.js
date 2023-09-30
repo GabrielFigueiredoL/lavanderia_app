@@ -20,12 +20,12 @@ function ContactList({ data, navigation }) {
       ListEmptyComponent={ListaVazia}
       renderItem={({ item }) => (
         <Card
-          name={item.name}
-          itens={item.itens}
+          name={item.contactName}
+          itens={item.selectedItems.length}
           value={new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(item.value)}
+          }).format(item.finalValue)}
           onPress={onPress}
         />
       )}
