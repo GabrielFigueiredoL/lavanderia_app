@@ -11,7 +11,9 @@ import styles from "./styles"
 
 function Home({ navigation }) {
   const [data, setData] = useState([])
-  const { getItem, setItem } = useAsyncStorage("@lavanderia_app:clientes")
+  const { getItem, setItem, removeItem } = useAsyncStorage(
+    "@lavanderia_app:clientes"
+  )
 
   useFocusEffect(
     useCallback(() => {
@@ -20,8 +22,10 @@ function Home({ navigation }) {
   )
 
   async function handleFetchData() {
+    const todayDate = new Date().toLocaleDateString("pt-BR")
     const response = await getItem()
-    const data = response ? JSON.parse(response) : []
+    const previousData = response ? JSON.parse(response) : []
+    const data = previousData.filter((item) => item.selectedDate == todayDate)
     setData(data)
   }
 
@@ -56,7 +60,7 @@ function Home({ navigation }) {
         </Text>
       </View>
       <ScrollView style={styles.clientes}>
-        <View style={styles.cards}>
+        <View>
           <ContactList data={data} navigation={navigation} />
         </View>
       </ScrollView>
