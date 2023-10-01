@@ -6,9 +6,14 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#D7EBE9",
     borderRadius: 30,
+    width: "48%",
+    marginBottom: "4%",
+  },
+  button: {
+    marginTop: "10%",
+    justifyContent: "space-between",
     flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 5,
+    paddingRight: "10%",
   },
 })
 
