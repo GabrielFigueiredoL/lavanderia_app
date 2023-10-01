@@ -16,11 +16,17 @@ function ContactList({ data, navigation }) {
   return (
     <FlatList
       data={data}
+      numColumns={2}
       scrollEnabled={false}
+      columnWrapperStyle={{
+        justifyContent: "space-between",
+      }}
       ListEmptyComponent={ListaVazia}
       renderItem={({ item }) => (
         <Card
           name={item.contactName}
+          local={item.localName}
+          date={item.selectedDate}
           itens={item.selectedItems.length}
           value={new Intl.NumberFormat("pt-BR", {
             style: "currency",
