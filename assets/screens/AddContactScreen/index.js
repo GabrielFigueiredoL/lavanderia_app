@@ -13,7 +13,7 @@ import styles from "./styles"
 import DatePicker from "../../components/DatePicker"
 import ItemList from "../../components/ItemList"
 
-function AddContact({ navigation }) {
+function AddContact() {
   const [selectedDate, setSelectedDate] = useState()
   const [selectedItems, setSelectedItems] = useState([])
   const [contactName, setContactName] = useState()
@@ -43,6 +43,24 @@ function AddContact({ navigation }) {
 
   let finalValue = totalValue - discount
 
+  function changeDate(brDate) {
+    const piece = brDate.split("/")
+    return new Date(piece[2], piece[1] - 1, piece[0])
+  }
+
+  function sortDateAscending(newData, previousData) {
+    const newDate = changeDate(newData.selectedDate)
+    const data = [
+      ...previousData.filter((item) => changeDate(item.selectedDate) < newDate),
+      newData,
+      ...previousData.filter(
+        (item) => changeDate(item.selectedDate) >= newDate
+      ),
+    ]
+
+    return data
+  }
+
   async function handleNew() {
     try {
       const id = uuid.v4()
@@ -58,9 +76,7 @@ function AddContact({ navigation }) {
       const response = await getItem()
       const previousData = response ? JSON.parse(response) : []
 
-      const data = [...previousData, newData]
-
-      await setItem(JSON.stringify(data))
+      await setItem(JSON.stringify(sortDateAscending(newData, previousData)))
       Toast.show({
         type: "success",
         text1: "Cliente adicionado com sucesso",
