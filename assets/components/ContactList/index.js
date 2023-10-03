@@ -12,7 +12,6 @@ const ListaVazia = () => {
 }
 
 function ContactList({ data, navigation }) {
-  const onPress = () => navigation.navigate("Edit")
   return (
     <FlatList
       data={data}
@@ -31,8 +30,10 @@ function ContactList({ data, navigation }) {
           value={new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(item.finalValue)}
-          onPress={onPress}
+          }).format(item.totalValue - item.discount)}
+          onPress={() => {
+            navigation.navigate("Editar contato", { item })
+          }}
         />
       )}
       keyExtractor={(item) => item.id}

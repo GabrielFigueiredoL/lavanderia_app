@@ -1,13 +1,10 @@
 import { StyleSheet } from "react-native"
 
 const styles = StyleSheet.create({
-  clientes: {
-    height: "62%",
-    marginTop: 10,
-  },
-  homescreen: {
+  container: {
+    backgroundColor: "#F8F8F8",
+    gap: 15,
     paddingHorizontal: 25,
-    marginTop: "5%",
   },
 })
 

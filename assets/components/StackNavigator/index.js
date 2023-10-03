@@ -9,10 +9,15 @@ import ContactsScreen from "../../screens/ContactsScreen"
 const Stack = createStackNavigator()
 
 const screenOptionStyle = {
+  headerTintColor: "#272727",
   headerStyle: {
     backgroundColor: "#89CCC5",
+    height: 90,
   },
-  headerTintColor: "#272727",
+  headerTitleStyle: {
+    fontSize: 24,
+    fontFamily: "RalewayBold",
+  },
 }
 
 const StackNavigator = () => {
@@ -24,7 +29,7 @@ const StackNavigator = () => {
           component={Navbar}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Edit" component={EditContactScreen} />
+        <Stack.Screen name="Editar contato" component={EditContactScreen} />
         <Stack.Screen name="Contact" component={ContactsScreen} />
       </Stack.Navigator>
     </NavigationContainer>

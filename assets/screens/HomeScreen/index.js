@@ -41,14 +41,7 @@ function Home({ navigation }) {
   /*
   excluir registro
   
-  async function handleRemove(id) {
-    const response = await getItem()
-    const previousData = response ? JSON.parse(response) : []
 
-    const data = previousData.filter((item) => item.id !== id)
-    setItem(JSON.stringify(data))
-    setData(data)
-  }
   */
 
   return (

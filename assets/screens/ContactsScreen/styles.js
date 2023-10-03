@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   contactscreen: {
     paddingHorizontal: 25,
-    marginTop: "10%",
+    marginTop: "5%",
   },
 })
 
