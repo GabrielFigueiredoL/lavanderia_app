@@ -1,13 +1,10 @@
 import * as React from "react"
 import { Text, View, FlatList, TouchableOpacity } from "react-native"
 import { useFonts } from "expo-font"
-import { useState } from "react"
-
-import itemList from "../database/itemList.json"
+import { useState, useEffect } from "react"
+import { useAsyncStorage } from "@react-native-async-storage/async-storage"
 
 import styles from "./styles"
-
-const items = itemList.itemList
 
 function ItemList({
   selectedItems,
@@ -15,7 +12,17 @@ function ItemList({
   totalValue,
   setTotalValue,
 }) {
-  const [options, setOptions] = useState(items)
+  useEffect(() => {
+    handleFetchData()
+  }, [])
+
+  async function handleFetchData() {
+    const response = await getItem()
+    const data = response ? JSON.parse(response) : []
+    setOptions(data)
+  }
+  const [options, setOptions] = useState()
+  const { getItem } = useAsyncStorage("@lavanderia_app:items")
 
   const [loaded] = useFonts({
     RalewayBold: require("../../fonts/Raleway-Bold.ttf"),
