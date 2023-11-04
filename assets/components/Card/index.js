@@ -4,7 +4,7 @@ import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons"
 
 import styles from "./styles"
 
-function Card({ onPress, name, itens, value, date, local }) {
+function Card({ onPress, item, toggleDelivery }) {
   const [loaded] = useFonts({
     RalewayBold: require("../../fonts/Raleway-Bold.ttf"),
     Montserrat: require("../../fonts/Montserrat-Regular.ttf"),
@@ -14,24 +14,52 @@ function Card({ onPress, name, itens, value, date, local }) {
     return null
   }
 
+  const {
+    clientName,
+    selectedItems,
+    selectedDate,
+    localName,
+    totalValue,
+    discount,
+    isDelivered,
+    freightage,
+    id,
+  } = item
+
+  const finalValue = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(Number(freightage) + totalValue - discount)
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, isDelivered && { backgroundColor: "#D7EBE9" }]}
+    >
       <TouchableOpacity onPress={onPress} style={styles.touchable}>
-        <Text style={{ fontFamily: "RalewayBold", fontSize: 16 }}>{name}</Text>
-        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>{local}</Text>
-        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>{date}</Text>
-        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
-          {itens} {itens > 1 ? "itens" : "item"}
+        <Text style={{ fontFamily: "RalewayBold", fontSize: 16 }}>
+          {clientName}
         </Text>
-        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>{value}</Text>
+        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
+          {localName}
+        </Text>
+        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
+          {selectedDate}
+        </Text>
+        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
+          {selectedItems.length} {selectedItems.length > 1 ? "itens" : "item"}
+        </Text>
+        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
+          {finalValue}
+        </Text>
       </TouchableOpacity>
       <View style={styles.button}>
-        <MaterialIcons name="attach-money" size={24} color="#E2958C" />
-        <MaterialCommunityIcons
-          name="truck-delivery-outline"
-          size={24}
-          color="green"
-        />
+        <TouchableOpacity onPress={() => toggleDelivery(id)}>
+          <MaterialCommunityIcons
+            name="truck-delivery-outline"
+            size={24}
+            color="green"
+          />
+        </TouchableOpacity>
       </View>
     </View>
   )

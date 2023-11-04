@@ -6,6 +6,17 @@ const styles = StyleSheet.create({
     gap: 15,
     paddingHorizontal: 25,
   },
+  cepInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  searchButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "22%",
+    marginLeft: "2%",
+  },
 })
 
 export default styles

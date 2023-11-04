@@ -7,7 +7,7 @@ import React from "react"
 import FinancesScreen from "../../screens/FinancesScreen"
 import ContactsScreen from "../../screens/ContactsScreen"
 import SettingsScreen from "../../screens/SettingsScreen"
-import AddContactScreen from "../../screens/AddContactScreen"
+import AddServiceScreen from "../../screens/AddServiceScreen"
 import Home from "../../screens/HomeScreen"
 
 const Tab = createBottomTabNavigator()
@@ -58,7 +58,7 @@ function Navbar() {
     >
       <Tab.Screen name="Tela Inicial" component={Home} />
       <Tab.Screen name="Serviços" component={ContactsScreen} />
-      <Tab.Screen name="Adicionar serviço" component={AddContactScreen} />
+      <Tab.Screen name="Adicionar serviço" component={AddServiceScreen} />
       <Tab.Screen name="Financeiro" component={FinancesScreen} />
       <Tab.Screen name="Configurações" component={SettingsScreen} />
     </Tab.Navigator>
