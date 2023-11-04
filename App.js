@@ -13,19 +13,19 @@ function App() {
     const response = await getItem()
     if (!response) {
       const deafaultItemList = [
-        { id: 0, name: "Carrinho Tradicional", value: 75 },
-        { id: 1, name: "Cadeirinha de carro", value: 70 },
-        { id: 2, name: "Carrinho de gêmeo", value: 120 },
-        { id: 3, name: "Bebê conforto", value: 60 },
-        { id: 4, name: "Berço portátil", value: 70 },
-        { id: 5, name: "Moisés", value: 60 },
+        { id: 0, name: "Almofada de amamentação", value: 30 },
+        { id: 1, name: "Bebê conforto", value: 60 },
+        { id: 2, name: "Berço portátil", value: 70 },
+        { id: 3, name: "Cadeirinha de alimentação P", value: 50 },
+        { id: 4, name: "Cadeirinha de alimentação G", value: 70 },
+        { id: 5, name: "Cadeirinha de carro", value: 70 },
         { id: 6, name: "Cadeirinha de descanso", value: 50 },
-        { id: 7, name: "Cadeirinha de alimentação P", value: 50 },
-        { id: 8, name: "Cadeirão de alimentação G", value: 70 },
-        { id: 9, name: "Ninho", value: 40 },
-        { id: 10, name: "Almofada de amamentação", value: 30 },
-        { id: 11, name: "Tapete de atividades", value: 30 },
-        { id: 12, name: "Colchão de berço padrão", value: 60 },
+        { id: 7, name: "Carrinho de gêmeo", value: 120 },
+        { id: 8, name: "Carrinho Tradicional", value: 75 },
+        { id: 9, name: "Moisés", value: 60 },
+        { id: 10, name: "Colchão de berço padrão", value: 60 },
+        { id: 11, name: "Ninho", value: 40 },
+        { id: 12, name: "Tapete de atividades", value: 30 },
       ]
 
       setItem(JSON.stringify(deafaultItemList))

@@ -13,23 +13,9 @@ const options = [
   { label: "Entregas Concluidas", value: "3" },
 ]
 
-function ContactsScreen({ navigation }) {
+function ContactsScreen({ navigation, route }) {
   const [value, setValue] = useState("1")
   const [data, setData] = useState([])
-  const { getItem, setItem } = useAsyncStorage("@lavanderia_app:clientes")
-
-  useFocusEffect(
-    useCallback(() => {
-      handleFetchData()
-    }, [])
-  )
-
-  async function handleFetchData() {
-    const response = await getItem()
-    const data = response ? JSON.parse(response) : []
-    setData(data)
-  }
-
   return (
     <View style={styles.contactscreen}>
       <Dropdown
@@ -46,7 +32,12 @@ function ContactsScreen({ navigation }) {
       />
       <ScrollView style={styles.clientes}>
         <View style={styles.cards}>
-          <ContactList data={data} navigation={navigation} />
+          <ContactList
+            navigation={navigation}
+            route={route}
+            data={data}
+            setData={setData}
+          />
         </View>
       </ScrollView>
     </View>
