@@ -24,7 +24,7 @@ function SettignsScreen() {
       await setItem(JSON.stringify(itemData))
       Toast.show({
         type: "success",
-        text1: "Serviço adicionado com sucesso",
+        text1: "Serviço atualizado com sucesso",
         visibilityTime: 1500,
       })
     } catch (error) {
@@ -94,7 +94,8 @@ function SettignsScreen() {
           <Text
             style={{ color: "#e64330", fontFamily: "Montserrat", fontSize: 16 }}
           >
-            Verifique se o disconto possui vírgula, espaço ou o sinal de menos
+            Verifique se algum dos campos possui vírgula, espaço ou o sinal de
+            menos
           </Text>
         )}
       </View>
