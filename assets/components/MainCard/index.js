@@ -1,6 +1,5 @@
 import { Text, View } from "react-native"
 import { useFonts } from "expo-font"
-import { useState } from "react"
 import { AnimatedCircularProgress } from "react-native-circular-progress"
 import styles from "./styles"
 

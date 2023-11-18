@@ -1,11 +1,6 @@
 import { FlatList, Text, View } from "react-native"
 import { useAsyncStorage } from "@react-native-async-storage/async-storage"
-import { useCallback } from "react"
-
-import { useFocusEffect } from "@react-navigation/native"
-
 import Card from "../Card"
-
 import styles from "./styles"
 
 const ListaVazia = () => {
@@ -16,33 +11,9 @@ const ListaVazia = () => {
   )
 }
 
-function ContactList({ navigation, route, data, setData }) {
-  const { getItem, setItem, removeItem } = useAsyncStorage(
-    "@lavanderia_app:clientes"
-  )
-
-  useFocusEffect(
-    useCallback(() => {
-      setData([])
-      handleFetchData()
-    }, [])
-  )
-
-  async function handleFetchData() {
-    const todayDate = new Date().toLocaleDateString("pt-BR")
-
-    const response = await getItem()
-
-    const previousData = response ? JSON.parse(response) : []
-    if (route.name == "Tela Inicial") {
-      const data = previousData.filter((item) => item.selectedDate == todayDate)
-      setData(data)
-    } else {
-      const data = response ? JSON.parse(response) : []
-      setData(data)
-    }
-  }
-
+function ContactList({ navigation, data, setData, route }) {
+  const { setItem } = useAsyncStorage("@lavanderia_app:clientes")
+  const currentDate = new Date().toLocaleDateString("en-GB")
   const toggleDelivery = async (itemId) => {
     const itemIndex = data.findIndex((item) => item.id === itemId)
 
@@ -52,10 +23,9 @@ function ContactList({ navigation, route, data, setData }) {
         ...updatedData[itemIndex],
         isDelivered: !updatedData[itemIndex].isDelivered,
       }
-
       try {
-        await setItem(JSON.stringify(updatedData))
         setData(updatedData)
+        await setItem(JSON.stringify(updatedData))
       } catch (error) {
         console.error(
           "Erro ao atualizar a lista de registros no AsyncStorage:",
@@ -66,15 +36,29 @@ function ContactList({ navigation, route, data, setData }) {
   }
 
   const renderOptions = ({ item, index }) => {
-    return (
-      <Card
-        item={item}
-        onPress={() => {
-          navigation.navigate("Detalhes", { item, index })
-        }}
-        toggleDelivery={toggleDelivery}
-      />
-    )
+    if (route.name == "Tela Inicial" && item.selectedDate == currentDate) {
+      return (
+        <Card
+          item={item}
+          onPress={() => {
+            navigation.navigate("Detalhes", { item, index })
+          }}
+          toggleDelivery={toggleDelivery}
+        />
+      )
+    } else if (route.name == "Serviços") {
+      return (
+        <Card
+          item={item}
+          onPress={() => {
+            navigation.navigate("Detalhes", { item, index })
+          }}
+          toggleDelivery={toggleDelivery}
+        />
+      )
+    } else {
+      return ""
+    }
   }
   return (
     <FlatList

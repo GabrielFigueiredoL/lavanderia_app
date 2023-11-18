@@ -1,6 +1,7 @@
 import { Text, View, ScrollView } from "react-native"
-import { useFonts } from "expo-font"
-import { useState } from "react"
+import { useAsyncStorage } from "@react-native-async-storage/async-storage"
+import { useState, useCallback, useEffect } from "react"
+import { useFocusEffect } from "@react-navigation/native"
 
 import MainCard from "../../components/MainCard"
 import ContactList from "../../components/ContactList"
@@ -9,18 +10,32 @@ import styles from "./styles"
 
 function Home({ navigation, route }) {
   const [data, setData] = useState([])
-  const [loaded] = useFonts({
-    RalewayBold: require("../../fonts/Raleway-Bold.ttf"),
-    Montserrat: require("../../fonts/Montserrat-Regular.ttf"),
-  })
+  const [filteredData, setFilteredData] = useState([])
+  const { getItem, setItem } = useAsyncStorage("@lavanderia_app:clientes")
+  const currentDate = new Date().toLocaleDateString("en-GB")
 
-  if (!loaded) {
-    return null
+  useFocusEffect(
+    useCallback(() => {
+      setData([])
+      setFilteredData([])
+      handleFetchData()
+    }, [])
+  )
+
+  useEffect(() => {
+    const filteredData = data.filter((item) => item.selectedDate == currentDate)
+    setFilteredData(filteredData)
+  }, [data])
+
+  async function handleFetchData() {
+    const response = await getItem()
+    const previousData = response ? await JSON.parse(response) : []
+    setData(previousData)
   }
 
   return (
     <View style={styles.homescreen}>
-      <MainCard data={data} />
+      <MainCard data={filteredData} />
       <View>
         <Text style={{ fontFamily: "RalewayBold", fontSize: 24 }}>
           Entregas do Dia
