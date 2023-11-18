@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native"
 import { useFonts } from "expo-font"
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 import styles from "./styles"
 
@@ -19,17 +19,15 @@ function Card({ onPress, item, toggleDelivery }) {
     selectedItems,
     selectedDate,
     localName,
-    totalValue,
-    discount,
     isDelivered,
-    freightage,
     id,
+    finalValue,
   } = item
 
-  const finalValue = new Intl.NumberFormat("pt-BR", {
+  const value = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
-  }).format(Number(freightage) + totalValue - discount)
+  }).format(finalValue)
 
   return (
     <View
@@ -48,9 +46,7 @@ function Card({ onPress, item, toggleDelivery }) {
         <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
           {selectedItems.length} {selectedItems.length > 1 ? "itens" : "item"}
         </Text>
-        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>
-          {finalValue}
-        </Text>
+        <Text style={{ fontFamily: "Montserrat", fontSize: 12 }}>{value}</Text>
       </TouchableOpacity>
       <View style={styles.button}>
         <TouchableOpacity onPress={() => toggleDelivery(id)}>
